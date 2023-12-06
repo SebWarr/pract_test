@@ -1,24 +1,47 @@
 # Creating the security groups that allow port 80 and port 22
-
 resource "aws_security_group" "allowing_http" {
     name        = "allowing_http"
     description = "Allows http inbound traffic"
 
-    ingress = {
-        description      = "http & ssh"
-        from_port        = 22
-        to_port          = 80
-        protocol         = "tcp"
-        cidr_blocks      = ["0.0.0.0/0"]
-    }
+    ingress = [
+        {
+            description = "http"
+            from_port   = 80
+            to_port     = 80
+            protocol    = "tcp"
+            cidr_blocks = ["0.0.0.0/0"]
+            ipv6_cidr_blocks = []
+            prefix_list_ids = []
+            security_groups = []
+            self = false
+        },
+        {
+            description = "ssh"
+            from_port   = 22
+            to_port     = 22
+            protocol    = "tcp"
+            cidr_blocks = ["0.0.0.0/0"]
+            ipv6_cidr_blocks = []
+            prefix_list_ids = []
+            security_groups = []
+            self = false
+        }
+    ]
 
-    egress = {
-        description = "for all outgoing traffics"
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+    egress = [
+        {
+            description = "for all outgoing traffics"
+            from_port   = 0
+            to_port     = 0
+            protocol    = "-1"
+            cidr_blocks = ["0.0.0.0/0"]
+            ipv6_cidr_blocks = ["::/0"]
+            prefix_list_ids = []
+            security_groups = []
+            self = false
+        }
+
+    ]
 
     tags = {
         Name = "own_secure_group"
